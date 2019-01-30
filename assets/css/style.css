@@ -1,0 +1,25 @@
+@font-face{
+    font-family: 'fajala';
+    src: url(../fonts/fuente.ttf) format('truetype');
+    font-weight: normal;
+    font-style:normal;
+}
+
+/**
+
+Stylos generales
+
+*/
+
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: sans-serif,Arial, Helvetica, sans-serif;
+    text-decoration: none;
+}
+
+body{
+    font-family: 'fajala';
+background:red;
+}
+
