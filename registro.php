@@ -1,5 +1,10 @@
 <?php
+
 if (isset($_POST)) {
+    require_once 'includes/conexion.php';
+    session_start();
+    
+
     $nombre=isset($_POST['nombre']) ? $_POST['nombre'] : false;
     $apellido=isset($_POST['apellido']) ? $_POST['apellido'] : false;
     $email=isset($_POST['email']) ? $_POST['email']:false;
@@ -32,17 +37,27 @@ if (isset($_POST)) {
             $password_validado=true;
         }else{
             $password_validado=false;
-            $errores['passworde']='El nombre no es valido';
+            $errores['password']='El nombre no es valido';
         }
         
         $guarda_usuario=false;
         if (count($errores)==0){
-        //INSERT USUARIO
+            //INSERT USUARIO
             $guarda_usuario=true;
+            //cifrar password
+            $password_segura=password_hash($password,PASSWORD_BCRYPT,['cost'=>4]);
+            $sql='insert into usuarios values(null, $apellido,$nombre,email,password, CURDATE();';
+            $guardar=mysqli_query($db, $sql);
+            if ($guardar){
+                $_SESSION['completado']="el registro se ha completado";
+            }else{
+                $_SESSION['errores']['general']="falla al guarda el usuario!!";
+            }
+
+
         }else{
-            
+            $_SESSION['errores']=$errores;
+          
         }
-
-
-var_dump($errores);
 }
+  header('Location: index.php');
