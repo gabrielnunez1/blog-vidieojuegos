@@ -1,11 +1,12 @@
 <?php
 
-$db = mysqli_connect('localhost', 'Gabriel', 'root', 'blog_master', 3306);
+$db = mysqli_connect('localhost', 'root', 'root','blog_master', 3306);
 
 
 mysqli_query($db, "SET NAMES 'UTF-8'");
 
 // Iniciar sesion
-
-session_start();
+if(!isset($_SESSION)){
+    session_start();
+}
 

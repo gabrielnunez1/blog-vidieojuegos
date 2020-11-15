@@ -2,16 +2,21 @@
 
 if (isset($_POST)) {
     require_once 'includes/conexion.php';
-    session_start();
+    if(!isset($_SESSION)){
+        session_start();
+    }
+
+
+// : equivale a sino
+    $nombre=isset($_POST['nombre']) ? mysqli_real_escape_string($db, $_POST['nombre']) : false;
+    $apellido=isset($_POST['apellido']) ? mysqli_real_escape_string($db, $_POST['apellido']) : false;
+    $email=isset($_POST['email']) ? mysqli_real_escape_string($db, trim($_POST['email'])) : false;
+    $password= isset($_POST['password']) ? mysqli_real_escape_string($db, $_POST['password']) :false;
     
-
-    $nombre=isset($_POST['nombre']) ? $_POST['nombre'] : false;
-    $apellido=isset($_POST['apellido']) ? $_POST['apellido'] : false;
-    $email=isset($_POST['email']) ? $_POST['email']:false;
-    $password= isset($_POST['password']) ? $_POST['password']:false;
-
+    //array de erros
     $errores=array();
-        //validar nombre
+    
+    //validar nombre
         if(!empty($nombre) && !is_numeric($nombre) && !preg_match("/[0-9]/",$nombre)){
             $nombre_validado=true;
         }else{
@@ -42,16 +47,20 @@ if (isset($_POST)) {
         
         $guarda_usuario=false;
         if (count($errores)==0){
-            //INSERT USUARIO
             $guarda_usuario=true;
+
             //cifrar password
             $password_segura=password_hash($password,PASSWORD_BCRYPT,['cost'=>4]);
-            $sql='insert into usuarios values(null, $apellido,$nombre,email,password, CURDATE();';
+            //INSERT USUARIO
+            $sql="INSERT INTO usuarios VALUES(null, '$nombre', '$apellido', '$email', '$password_segura', CURDATE())";
+
+            // var_dump(mysqli_error($db));die;
+            // var_dump($password_segura);die;
             $guardar=mysqli_query($db, $sql);
             if ($guardar){
-                $_SESSION['completado']="el registro se ha completado";
+                $_SESSION['completado']="El registro se ha completado";
             }else{
-                $_SESSION['errores']['general']="falla al guarda el usuario!!";
+                $_SESSION['errores']['general']="Falla al guarda el usuario!!";
             }
 
 
@@ -60,4 +69,6 @@ if (isset($_POST)) {
           
         }
 }
-  header('Location: index.php');
+
+
+header('Location: index.php');

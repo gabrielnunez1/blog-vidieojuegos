@@ -2,10 +2,10 @@
 <?php require_once 'includes/lateral.php'; ?>
 <!-- CAJA PRINCIPAL -->
 <div id='principal'>
-    <h1>Ultimas Entradas</h1>
+    <h1>Todas las entradas</h1>
 
     <?php
-    $entradas = consegirEntradas($db, true);
+    $entradas = consegirEntradas($db);
 
     if (!empty($entradas)) :
         while ($entrada = mysqli_fetch_assoc($entradas)) :
@@ -23,10 +23,6 @@
         endwhile;
     endif;
     ?>
-    <div id='ver-todas'>
-        <a href="entradas.php">Ver Todas Las Entradas</a>
-
-    </div>
 </div>
 
 
